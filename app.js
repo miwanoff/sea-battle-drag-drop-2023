@@ -2,12 +2,16 @@ const gameOptionContainer = document.querySelector("#game-option");
 const rotateButton = document.querySelector("#rotate");
 
 function rotate() {
-  const optionShips = gameOptionContainer.children;
+  // const optionShips = gameOptionContainer.children;
   //console.log(optionShips);
-  for (const ship of optionShips) {
-    console.log(ship.className);
-    ship.style.transform = "rotate(90deg)";
-  }
+  //   for (const ship of optionShips) {
+  //     console.log(ship.className);
+  //     ship.style.transform = "rotate(90deg)";
+  //   }
+  const optionShips = Array.from(gameOptionContainer.children);
+  optionShips.forEach(
+    (optionShip) => (optionShip.style.transform = "rotate(90deg)")
+  );
 }
 
 rotateButton.addEventListener("click", rotate);

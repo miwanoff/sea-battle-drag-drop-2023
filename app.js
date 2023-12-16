@@ -6,6 +6,7 @@ function rotate() {
   //console.log(optionShips);
   for (const ship of optionShips) {
     console.log(ship.className);
+    ship.style.transform = "rotate(90deg)";
   }
 }
 

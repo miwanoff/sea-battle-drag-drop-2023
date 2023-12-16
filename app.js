@@ -26,6 +26,12 @@ function createBoard(color, user) {
   gameBoard.style.background = color;
   gameBoard.id = user;
   gameBoardsContainer.append(gameBoard);
+  for (let i = 0; i < 100; i++) {
+    const block = document.createElement("div");
+    block.classList.add("block");
+    block.id = `block-${i}`;
+    gameBoard.append(block);
+  }
 }
 
 createBoard("tan", "human");

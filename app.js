@@ -55,13 +55,14 @@ const ships = [ship1, ship2, ship3, ship4];
 
 let isHorisontal = true;
 
-let shipBlocks = [];
+
 
 function generate(ship) {
   const allBoardBlocks = document.querySelectorAll("#computer div");
   let randomBoolean = Math.random() < 0.5;
   isHorisontal = randomBoolean;
   let randomStartIndex = Math.floor(Math.random() * width * width);
+  let shipBlocks = [];
   for (let i = 0; i < ship.length; i++) {
     if (isHorisontal) {
       //console.log(allBoardBlocks[randomStartIndex + i]);
@@ -74,4 +75,5 @@ function generate(ship) {
   console.log(shipBlocks);
 }
 
-generate(ship3);
+//generate(ship3);
+ships.forEach((ship) => generate(ship));

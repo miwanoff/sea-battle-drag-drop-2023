@@ -135,7 +135,7 @@ function dragOver(event) {
 
 function dropShip(event) {
   const startID = event.target.id;
-  const ship = ships[draggedShip.id];
+  const ship = ships[draggedShip.id.substr(5)];
   generate("human", ship, startID);
   if (!notDropped) {
     draggedShip.remove();

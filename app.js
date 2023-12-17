@@ -53,7 +53,7 @@ const ship4 = new Ship("deck-three", 3);
 
 const ships = [ship1, ship2, ship3, ship4];
 
-let isHorisontal = true;
+let isHorisontal = false;
 
 let shipBlocks = [];
 
@@ -61,8 +61,13 @@ function generate(ship) {
   const allBoardBlocks = document.querySelectorAll("#computer div");
   let randomStartIndex = Math.floor(Math.random() * width * width);
   for (let i = 0; i < ship.length; i++) {
-    //console.log(allBoardBlocks[randomStartIndex + i]);
-    shipBlocks.push(allBoardBlocks[Number(randomStartIndex) + i]);
+    if (isHorisontal) {
+      //console.log(allBoardBlocks[randomStartIndex + i]);
+      shipBlocks.push(allBoardBlocks[Number(randomStartIndex) + i]);
+    } else {
+      //console.log(allBoardBlocks[Number(randomStartIndex) + i * width]);
+      shipBlocks.push(allBoardBlocks[Number(randomStartIndex) + i * width]);
+    }
   }
   console.log(shipBlocks);
 }

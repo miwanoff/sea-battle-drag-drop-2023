@@ -4,6 +4,8 @@ const gameBoardsContainer = document.querySelector("#game-boards");
 
 let angle = 0;
 
+let width = 10;
+
 function rotate() {
   // const optionShips = gameOptionContainer.children;
   //console.log(optionShips);
@@ -26,7 +28,7 @@ function createBoard(color, user) {
   gameBoard.style.background = color;
   gameBoard.id = user;
   gameBoardsContainer.append(gameBoard);
-  for (let i = 0; i < 100; i++) {
+  for (let i = 0; i < width * width; i++) {
     const block = document.createElement("div");
     block.classList.add("block");
     block.id = `block-${i}`;
@@ -53,12 +55,16 @@ const ships = [ship1, ship2, ship3, ship4];
 
 let isHorisontal = true;
 
+let shipBlocks = [];
+
 function generate(ship) {
   const allBoardBlocks = document.querySelectorAll("#computer div");
-  let randomStartIndex = Math.floor(Math.random() * 100);
+  let randomStartIndex = Math.floor(Math.random() * width * width);
   for (let i = 0; i < ship.length; i++) {
-    console.log(allBoardBlocks[randomStartIndex + i]);
+    //console.log(allBoardBlocks[randomStartIndex + i]);
+    shipBlocks.push(allBoardBlocks[Number(randomStartIndex) + i]);
   }
+  console.log(shipBlocks);
 }
 
-generate(ship4);
+generate(ship3);

@@ -80,12 +80,54 @@ function generate(ship) {
       shipBlocks.push(allBoardBlocks[Number(validStart) + i * width]);
     }
   }
+
+  const notTaken = shipBlocks.every(
+    (shipBlocks) => !shipBlocks.classList.contains("taken")
+  );
+
+  if (notTaken) {
+    shipBlocks.forEach((shipBlock) => {
+      shipBlock.classList.add(ship.name);
+      shipBlock.classList.add("taken");
+    });
+  } else {
+    generate(ship);
+  }
+
   console.log(shipBlocks);
-  shipBlocks.forEach((shipBlock) => {
-    shipBlock.classList.add(ship.name);
-    shipBlock.classList.add("taken");
-  });
+  //   shipBlocks.forEach((shipBlock) => {
+  //     shipBlock.classList.add(ship.name);
+  //     shipBlock.classList.add("taken");
+  //   });
 }
 
 //generate(ship3);
 ships.forEach((ship) => generate(ship));
+
+let draggedShip;
+
+const optionShips = Array.from(gameOptionContainer.children);
+
+optionShips.forEach((optionShip) =>
+  optionShip.addEventListener("dragstart", dragStart)
+);
+
+const allUserBlocks = document.querySelectorAll("#human div");
+allUserBlocks.forEach((userBlock) => {
+  userBlock.addEventListener("dragover", dragOver);
+  userBlock.addEventListener("drop", dropShip);
+});
+
+function dragStart(event) {
+  draggedShip = event.target;
+}
+
+function dragOver(event) {
+  event.preventDefault();
+}
+
+function dropShip(event) {
+  const startID = event.target.id;
+  const ship = ships[draggedShip.id];
+  generate("human", ship, startID);
+}

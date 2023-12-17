@@ -62,14 +62,20 @@ function generate(ship) {
   let randomBoolean = Math.random() < 0.5;
   isHorisontal = randomBoolean;
   let randomStartIndex = Math.floor(Math.random() * width * width);
+
+  let validStart = isHorisontal? randomStartIndex <= width * width - ship.length? randomStartIndex: width * width - ship.length
+  : randomStartIndex <= width * width - width * ship.length? randomStartIndex
+  : width * width - width * ship.length;
+  console.log (validStart, isHorisontal);
   let shipBlocks = [];
+
   for (let i = 0; i < ship.length; i++) {
     if (isHorisontal) {
       //console.log(allBoardBlocks[randomStartIndex + i]);
-      shipBlocks.push(allBoardBlocks[Number(randomStartIndex) + i]);
+      shipBlocks.push(allBoardBlocks[Number(validStart) + i]);
     } else {
       //console.log(allBoardBlocks[Number(randomStartIndex) + i * width]);
-      shipBlocks.push(allBoardBlocks[Number(randomStartIndex) + i * width]);
+      shipBlocks.push(allBoardBlocks[Number(validStart) + i * width]);
     }
   }
   console.log(shipBlocks);

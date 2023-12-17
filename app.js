@@ -55,18 +55,23 @@ const ships = [ship1, ship2, ship3, ship4];
 
 let isHorisontal = true;
 
-function generate(ship) {
-  const allBoardBlocks = document.querySelectorAll("#computer div");
-  let randomBoolean = Math.random() < 0.5;
-  isHorisontal = randomBoolean;
-  let randomStartIndex = Math.floor(Math.random() * width * width);
+let notDropped;
 
+function generate(user, ship, startId) {
+  //   const allBoardBlocks = document.querySelectorAll("#computer div");
+  //   let randomBoolean = Math.random() < 0.5;
+  //   isHorisontal = randomBoolean;
+  const allBoardBlocks = document.querySelectorAll(`#${user} div`);
+  let randomBoolean = Math.random() < 0.5;
+  isHorisontal = user === "human" ? angle === 0 : randomBoolean;
+  let randomStartIndex = Math.floor(Math.random() * width * width);
+  let startIndex = startId ? startId.substr(6) : randomStartIndex;
   let validStart = isHorisontal
-    ? randomStartIndex <= width * width - ship.length
-      ? randomStartIndex
+    ? startIndex <= width * width - ship.length
+      ? startIndex
       : width * width - ship.length
-    : randomStartIndex <= width * width - width * ship.length
-    ? randomStartIndex
+    : startIndex <= width * width - width * ship.length
+    ? startIndex
     : width * width - width * ship.length;
   console.log(validStart, isHorisontal);
   let shipBlocks = [];
@@ -91,7 +96,8 @@ function generate(ship) {
       shipBlock.classList.add("taken");
     });
   } else {
-    generate(ship);
+    if (user === "computer") generate(user, ship);
+    if (user === "human") notDropped = true;
   }
 
   console.log(shipBlocks);
@@ -102,7 +108,7 @@ function generate(ship) {
 }
 
 //generate(ship3);
-ships.forEach((ship) => generate(ship));
+ships.forEach((ship) => generate("computer", ship));
 
 let draggedShip;
 
@@ -120,6 +126,7 @@ allUserBlocks.forEach((userBlock) => {
 
 function dragStart(event) {
   draggedShip = event.target;
+  notDropped = false;
 }
 
 function dragOver(event) {
@@ -130,4 +137,7 @@ function dropShip(event) {
   const startID = event.target.id;
   const ship = ships[draggedShip.id];
   generate("human", ship, startID);
+  if (!notDropped) {
+    draggedShip.remove();
+  }
 }

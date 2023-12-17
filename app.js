@@ -55,18 +55,20 @@ const ships = [ship1, ship2, ship3, ship4];
 
 let isHorisontal = true;
 
-
-
 function generate(ship) {
   const allBoardBlocks = document.querySelectorAll("#computer div");
   let randomBoolean = Math.random() < 0.5;
   isHorisontal = randomBoolean;
   let randomStartIndex = Math.floor(Math.random() * width * width);
 
-  let validStart = isHorisontal? randomStartIndex <= width * width - ship.length? randomStartIndex: width * width - ship.length
-  : randomStartIndex <= width * width - width * ship.length? randomStartIndex
-  : width * width - width * ship.length;
-  console.log (validStart, isHorisontal);
+  let validStart = isHorisontal
+    ? randomStartIndex <= width * width - ship.length
+      ? randomStartIndex
+      : width * width - ship.length
+    : randomStartIndex <= width * width - width * ship.length
+    ? randomStartIndex
+    : width * width - width * ship.length;
+  console.log(validStart, isHorisontal);
   let shipBlocks = [];
 
   for (let i = 0; i < ship.length; i++) {
@@ -79,6 +81,10 @@ function generate(ship) {
     }
   }
   console.log(shipBlocks);
+  shipBlocks.forEach((shipBlock) => {
+    shipBlock.classList.add(ship.name);
+    shipBlock.classList.add("taken");
+  });
 }
 
 //generate(ship3);

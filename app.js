@@ -143,6 +143,8 @@ function dragStart(event) {
 
 function dragOver(event) {
   event.preventDefault();
+  const ship = ships[draggedShip.id.substr(5)];
+  highlight(event.target.id.substr(6), ship);
 }
 
 function dropShip(event) {
@@ -151,5 +153,22 @@ function dropShip(event) {
   generate("human", ship, startID);
   if (!notDropped) {
     draggedShip.remove();
+  }
+}
+
+function highlight(startIndex, ship) {
+  const allBoardBlocks = document.querySelectorAll("#human div");
+  let isHorisontal = angle === 0;
+  const { shipBlocks, notTaken } = getValidity(
+    allBoardBlocks,
+    isHorisontal,
+    startIndex,
+    ship
+  );
+  if (notTaken) {
+    shipBlocks.forEach((shipBlock) => {
+      shipBlock.classList.add("hover");
+      setTimeout(() => shipBlock.classList.remove("hover"), 500);
+    });
   }
 }

@@ -8,9 +8,9 @@ const info = document.querySelector("#info");
 let angle = 0;
 let width = 10;
 let gameOver = false;
-let playerTurn = true;
+let humanTurn = true;
 
-let userHits = [];
+let humanHits = [];
 let computerHits = [];
 
 function rotate() {
@@ -180,6 +180,54 @@ function highlight(startIndex, ship) {
   }
 }
 
+function computerGo() {
+  if (!gameOver) {
+    turn.textContent = "Computers Go!";
+    info.textContent = "Computers is thinking...";
+
+    setTimeout(() => {
+      let rand = Math.floor(Math.random() * width * width);
+      const allBoardsBlocks = document.querySelectorAll("#human div");
+
+      if (
+        allBoardsBlocks[rand].classList.contains("taken") &&
+        allBoardsBlocks[rand].classList.contains("boom")
+      ) {
+        computerGo();
+        return;
+      } else if (
+        allBoardsBlocks[rand].classList.contains("taken") &&
+        !allBoardsBlocks[rand].classList.contains("boom")
+      ) {
+        allBoardsBlocks[rand].classList.add("boom");
+        info.textContent = "Computer hit your ship!";
+        let classes = Array.from(allBoardsBlocks[rand].classList);
+        classes = classes.filter(
+          (className) =>
+            className !== "block" &&
+            className !== "boom" &&
+            className !== "taken"
+        );
+        computerHits.push(...classes);
+        console.log(computerHits);
+      } else {
+        info.textContent = "Nothing hit";
+        allBoardsBlocks[rand].classList.add("empty");
+      }
+    }, 3000);
+    setTimeout(() => {
+      humanTurn = true;
+      turn.textContent = "Your Go!";
+      info.textContent = "Your turn!";
+      const allBoardBlocks = document.querySelectorAll("#computer div");
+      allBoardBlocks.forEach((block) =>
+        block.addEventListener("click", handleClick)
+      );
+    }, 6000);
+
+  }
+}
+
 function handleClick(event) {
   if (!gameOver)
     if (event.target.classList.contains("taken")) {
@@ -190,12 +238,16 @@ function handleClick(event) {
         (className) =>
           className !== "block" && className !== "boom" && className !== "taken"
       );
-      userHits.push(...classes);
-      console.log(userHits);
+      humanHits.push(...classes);
+      console.log(humanHits);
     } else {
       info.textContent = "You missed it";
       event.target.classList.add("empty");
     }
+  humanTurn = false;
+  const allBoardBlocks = document.querySelectorAll("#computer div");
+  allBoardBlocks.forEach((block) => block.replaceWith(block.cloneNode(true)));
+  setTimeout(computerGo, 2000);
 }
 
 function startGame() {

@@ -10,6 +10,9 @@ let width = 10;
 let gameOver = false;
 let playerTurn = true;
 
+let userHits = [];
+let computerHits = [];
+
 function rotate() {
   // const optionShips = gameOptionContainer.children;
   //console.log(optionShips);
@@ -182,6 +185,16 @@ function handleClick(event) {
     if (event.target.classList.contains("taken")) {
       event.target.classList.add("boom");
       info.innerHTML = "You hit computers ship!";
+      let classes = Array.from(event.target.classList);
+      classes = classes.filter(
+        (className) =>
+          className !== "block" && className !== "boom" && className !== "taken"
+      );
+      userHits.push(...classes);
+      console.log(userHits);
+    } else {
+      info.textContent = "You missed it";
+      event.target.classList.add("empty");
     }
 }
 

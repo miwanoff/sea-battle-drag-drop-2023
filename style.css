@@ -70,10 +70,14 @@ h1 {
 }
 
 .empty {
-  background-color: rgb(255, 255, 255);
+  background-color: rgb(255, 255, 255) !important;
 }
 
 .boom {
-  background-image: url(./images/Cross.png)  !important;
+  background-image: url(./images/Cross.png) !important;
   background-size: cover;
+}
+
+#computer .block {
+  background-color: pink;
 }

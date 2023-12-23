@@ -57,15 +57,7 @@ let isHorisontal = true;
 
 let notDropped;
 
-function generate(user, ship, startId) {
-  //   const allBoardBlocks = document.querySelectorAll("#computer div");
-  //   let randomBoolean = Math.random() < 0.5;
-  //   isHorisontal = randomBoolean;
-  const allBoardBlocks = document.querySelectorAll(`#${user} div`);
-  let randomBoolean = Math.random() < 0.5;
-  isHorisontal = user === "human" ? angle === 0 : randomBoolean;
-  let randomStartIndex = Math.floor(Math.random() * width * width);
-  let startIndex = startId ? startId.substr(6) : randomStartIndex;
+function getValidity(allBoardBlocks, isHorisontal, startIndex, ship) {
   let validStart = isHorisontal
     ? startIndex <= width * width - ship.length
       ? startIndex
@@ -88,6 +80,26 @@ function generate(user, ship, startId) {
 
   const notTaken = shipBlocks.every(
     (shipBlocks) => !shipBlocks.classList.contains("taken")
+  );
+
+  return { shipBlocks, notTaken };
+}
+
+function generate(user, ship, startId) {
+  //   const allBoardBlocks = document.querySelectorAll("#computer div");
+  //   let randomBoolean = Math.random() < 0.5;
+  //   isHorisontal = randomBoolean;
+  const allBoardBlocks = document.querySelectorAll(`#${user} div`);
+  let randomBoolean = Math.random() < 0.5;
+  isHorisontal = user === "human" ? angle === 0 : randomBoolean;
+  let randomStartIndex = Math.floor(Math.random() * width * width);
+  let startIndex = startId ? startId.substr(6) : randomStartIndex;
+
+  const { shipBlocks, notTaken } = getValidity(
+    allBoardBlocks,
+    isHorisontal,
+    startIndex,
+    ship
   );
 
   if (notTaken) {

@@ -13,6 +13,9 @@ let humanTurn = true;
 let humanHits = [];
 let computerHits = [];
 
+let computerSunkShips = [];
+let humanSunkShips = [];
+
 function rotate() {
   // const optionShips = gameOptionContainer.children;
   //console.log(optionShips);
@@ -210,6 +213,7 @@ function computerGo() {
         );
         computerHits.push(...classes);
         console.log(computerHits);
+        checkScore("computer", computerHits, computerSunkShips);
       } else {
         info.textContent = "Nothing hit";
         allBoardsBlocks[rand].classList.add("empty");
@@ -224,7 +228,6 @@ function computerGo() {
         block.addEventListener("click", handleClick)
       );
     }, 6000);
-
   }
 }
 
@@ -240,6 +243,7 @@ function handleClick(event) {
       );
       humanHits.push(...classes);
       console.log(humanHits);
+      checkScore("human", humanHits, humanSunkShips);
     } else {
       info.textContent = "You missed it";
       event.target.classList.add("empty");
@@ -264,3 +268,37 @@ function startGame() {
 }
 
 startButton.addEventListener("click", startGame);
+
+function checkScore(user, userHits, userSunkShips) {
+  function checkShip(shipName, shipLength) {
+    if (
+      userHits.filter((storedShipName) => storedShipName === shipName).length ===
+      shipLength
+    ) {
+      if (user === "human") {
+        info.textContent = `You sunk the computer's ${shipName}`;
+        humanHits = userHits.filter((storedShipName) => storedShipName != shipName);
+      }
+      if (user === "computer") {
+        info.textContent = `Computer sunk your ${shipName}`;
+        computerHits = userHits.filter(
+          (storedShipName) => storedShipName != shipName
+        );
+      }
+      userSunkShips.push(shipName);
+    }
+  }
+  checkShip("deck-one", 1);
+  checkShip("deck-three", 3);
+
+  console.log("userHits", user, userHits);
+  console.log("userSunkShips", user, userSunkShips);
+  if (humanSunkShips.length === 4) {
+    info.textContent = "You won!";
+    gameOver = true;
+  }
+  if (computerSunkShips.length === 4) {
+    info.textContent = "Computer won!";
+    gameOver = true;
+  }
+}

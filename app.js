@@ -1,10 +1,14 @@
 const gameOptionContainer = document.querySelector("#game-option");
 const rotateButton = document.querySelector("#rotate");
 const gameBoardsContainer = document.querySelector("#game-boards");
+const startButton = document.querySelector("#start");
+const turn = document.querySelector("#turn");
+const info = document.querySelector("#info");
 
 let angle = 0;
-
 let width = 10;
+let gameOver = false;
+let playerTurn = true;
 
 function rotate() {
   // const optionShips = gameOptionContainer.children;
@@ -172,3 +176,26 @@ function highlight(startIndex, ship) {
     });
   }
 }
+
+function handleClick(event) {
+  if (!gameOver)
+    if (event.target.classList.contains("taken")) {
+      event.target.classList.add("boom");
+      info.innerHTML = "You hit computers ship!";
+    }
+}
+
+function startGame() {
+  if (gameOptionContainer.children.length != 0) {
+    info.innerHTML = "Place all your ships!";
+  } else {
+    info.innerHTML = "Congrat!";
+
+    const allBoardBlocks = document.querySelectorAll("#computer div");
+    allBoardBlocks.forEach((block) =>
+      block.addEventListener("click", handleClick)
+    );
+  }
+}
+
+startButton.addEventListener("click", startGame);

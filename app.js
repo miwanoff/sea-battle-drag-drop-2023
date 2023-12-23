@@ -265,6 +265,9 @@ function startGame() {
       block.addEventListener("click", handleClick)
     );
   }
+  humanTurn = true;
+  turn.textContent = "You Go!";
+  info.textContent = "The game has started!";
 }
 
 startButton.addEventListener("click", startGame);
@@ -272,12 +275,14 @@ startButton.addEventListener("click", startGame);
 function checkScore(user, userHits, userSunkShips) {
   function checkShip(shipName, shipLength) {
     if (
-      userHits.filter((storedShipName) => storedShipName === shipName).length ===
-      shipLength
+      userHits.filter((storedShipName) => storedShipName === shipName)
+        .length === shipLength
     ) {
       if (user === "human") {
         info.textContent = `You sunk the computer's ${shipName}`;
-        humanHits = userHits.filter((storedShipName) => storedShipName != shipName);
+        humanHits = userHits.filter(
+          (storedShipName) => storedShipName != shipName
+        );
       }
       if (user === "computer") {
         info.textContent = `Computer sunk your ${shipName}`;
